@@ -1,10 +1,7 @@
 .git
 .lock
 __pycache__
-*.bak
-*.pid
-*.dat
-*.dir
-*.log
+celerybeat-schedule*
+*.log*
 .python-version
 .supervisor
