@@ -1,0 +1,10 @@
+.git
+.lock
+__pycache__
+*.bak
+*.pid
+*.dat
+*.dir
+*.log
+.python-version
+.supervisor
