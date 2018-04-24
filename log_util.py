@@ -221,7 +221,7 @@ class RotatingFileHandler_MP(RotatingFileHandler, FileHandler_MP):
                 self.doRollover()
             FileLock = self._lock_dir + '/' + os.path.basename(self.baseFilename) + '.' + record.levelname
             f = open(FileLock, "w+")
-            portalocker.lock(f, portalocker.LOCK_EX)
+            portalocker.lock(f, portalocker.LOCK_EX | portalocker.LOCK_NB)
             FileHandler_MP.emit(self, record)
             portalocker.unlock(f)
             f.close()
@@ -359,7 +359,7 @@ class TimedRotatingFileHandler_MP(TimedRotatingFileHandler, FileHandler_MP):
                 self.doRollover()
             FileLock = self._lock_dir + '/' + os.path.basename(self.baseFilename) + '.' + record.levelname
             f = open(FileLock, "w+")
-            portalocker.lock(f, portalocker.LOCK_EX)
+            portalocker.lock(f, portalocker.LOCK_EX | portalocker.LOCK_NB)
             FileHandler_MP.emit(self, record)
             portalocker.unlock(f)
             f.close()
