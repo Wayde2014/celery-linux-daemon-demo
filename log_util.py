@@ -8,6 +8,7 @@ import os
 import re
 import time
 import shutil
+import platform
 import logging
 import portalocker
 from stat import ST_MTIME
@@ -221,7 +222,10 @@ class RotatingFileHandler_MP(RotatingFileHandler, FileHandler_MP):
                 self.doRollover()
             FileLock = self._lock_dir + '/' + os.path.basename(self.baseFilename) + '.' + record.levelname
             f = open(FileLock, "w+")
-            portalocker.lock(f, portalocker.LOCK_EX | portalocker.LOCK_NB)
+            flags = portalocker.LOCK_EX
+            if platform.system().lower() == 'windows':
+                flags = portalocker.LOCK_EX | portalocker.LOCK_NB
+            portalocker.lock(f, flags)
             FileHandler_MP.emit(self, record)
             portalocker.unlock(f)
             f.close()
@@ -359,7 +363,10 @@ class TimedRotatingFileHandler_MP(TimedRotatingFileHandler, FileHandler_MP):
                 self.doRollover()
             FileLock = self._lock_dir + '/' + os.path.basename(self.baseFilename) + '.' + record.levelname
             f = open(FileLock, "w+")
-            portalocker.lock(f, portalocker.LOCK_EX | portalocker.LOCK_NB)
+            flags = portalocker.LOCK_EX
+            if platform.system().lower() == 'windows':
+                flags = portalocker.LOCK_EX | portalocker.LOCK_NB
+            portalocker.lock(f, flags)
             FileHandler_MP.emit(self, record)
             portalocker.unlock(f)
             f.close()
